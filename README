@@ -1,0 +1,107 @@
+NAME
+    Event::Emitter - Glue for event-driven programming, inside out
+
+SYNOPSIS
+        package Sample;
+        use Event::Emitter;
+
+        sub new { ... }
+
+        package main;
+
+        my $o = Sample->new;
+        $o->on(
+        event => sub { ... }
+        );
+
+        $o->event(event => @args);
+
+        $o->no('event');
+
+DESCRIPTION
+    This module is something between Object::Event and Node.js'
+    EventEmitter.
+
+    The differences from Object::Event are:
+
+    Event::Emitter not affects object structure or content. All things about
+    events stored outside object
+    Event::Emitter uses interface similar to Node.js' EventEmitter (for ex
+    "on()" instead of "reg_cb()" )
+    Event::Emitter uses opposite order when calling events, registered under
+    same name. "OE" uses "FIFO", "EE" uses "LIFO"
+    Event::Emitter does not implement attributes.
+    Event::Emitter does not set itself as a base class (could be changed
+    with "-base" flag).
+
+METHODS
+    [ $guard = ] $obj->on( $event_name, [$prio], $cb )
+        Register one or more event handler
+
+            $obj->on( $event_name, [$prio], $cb, [ $event_name, [$prio], $cb, ... ] );
+            # or with guard
+            my $guard = $obj->on( $event_name, [$prio], $cb);
+            ...
+            undef $guard;
+
+    $obj->once( $event_name, [$prio], $cb)
+        Register event handler for single run
+
+            $obj->once( $event_name, [$prio], $cb );
+            $obj->event($event_name); # $cb called
+            $obj->event($event_name); # $cb not called
+
+    $obj->no(...)
+        Unregister event
+
+            $obj->no($cb);    # Unregister by callback
+            $obj->no('name'); # Unregister all events by name
+            $obj->no();       # Unregister all events
+
+    $obj->handles($event_name);
+        Return true, if event would handled by $obj
+
+    $obj->handled()
+        Stop processing current event chain.
+
+        my $x = X->new;
+        $x->on(sample => sub { say "sample 1"  });
+        $x->on(sample => sub { say "sample 2"; $x->handled; });
+        $x->on(sample => sub { say "sample 3"  });
+        $x->event('sample');
+
+        # Will output
+        sample 3
+        sample 2
+
+    $obj->event($event_name,@args); =item $obj->emit($event_name,@args);
+        Emit event $event_name and call every handler in chain.
+
+    $obj->on(__DIE__, $cb)
+        Set exception handler. "__DIE__" is just a special name
+
+  Compatibility with Object::Event
+    Event::Emitter implements compatibility methods with Object::Event. It
+    is enabled with "-oecompat" flag:
+
+        use Event::Emitter -base, -oecompat;
+
+    reg_cb(...) as on(...)
+    unreg_cb(...) as no(...)
+    set_exception_cb($cb) as on(__DIE__,$cb)
+    remove_all_callbacks() as no()
+
+    1. Process events as fast as possible 2. Event addition 3. Event
+    deletion (what about once events?)
+
+AUTHOR
+    Mons Anderson <mons@cpan.org>
+
+LICENSE
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of either: the GNU General Public License as published
+    by the Free Software Foundation; or the Artistic License.
+
+COPYRIGHT
+    Copyright 2011 Mons Anderson, all rights reserved.
+
