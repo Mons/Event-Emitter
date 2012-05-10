@@ -3,11 +3,11 @@ abstract: 'Glue for event-driven programming, inside out'
 author:
   - 'Mons Anderson  <mons@cpan.org>'
 build_requires:
-  ExtUtils::MakeMaker: 6.57
+  ExtUtils::MakeMaker: 6.62
   Test::More: 0
   lib::abs: 0.90
 configure_requires:
-  ExtUtils::MakeMaker: 6.57
+  ExtUtils::MakeMaker: 6.62
 distribution_type: module
 dynamic_config: 1
 generated_by: 'Module::Install version 1.04'
@@ -24,11 +24,11 @@ no_index:
 provides:
   Event::Emitter:
     file: lib/Event/Emitter.pm
-    version: 0.01
+    version: 0.02
 requires:
   Scalar::Util: 0
   common::sense: 2
   perl: 5.8.8
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

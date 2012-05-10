@@ -13,7 +13,7 @@ Event::Emitter - Glue for event-driven programming, inside out
 
 =cut
 
-our $VERSION = '0.01'; $VERSION = eval($VERSION);
+our $VERSION = '0.02'; $VERSION = eval($VERSION);
 
 =head1 SYNOPSIS
 
@@ -254,7 +254,7 @@ sub on {
 	#warn "<< leave loop";
 	return
 		defined wantarray ? 
-		Event::Emitter::_Guard { $obj->no($_) for @cbs; }
+		Event::Emitter::_Guard { $obj or return; $obj->no($_) for @cbs; }
 		: ();
 }
 

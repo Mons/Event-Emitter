@@ -1,4 +1,7 @@
 Revision history for Event::Emitter
 
+0.02    2012-05-10
+        Fix guard with global destruction
+
 0.01    2011-10-28
         Initial creation
