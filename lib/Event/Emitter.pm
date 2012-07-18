@@ -326,13 +326,14 @@ sub event {
 			eval {
 				$cbx->[0]->( $obj, @_ );
 			1 } or do {
+				my $e = "$@ ...";
 				if ($ev eq '__DIE__') {
-					warn "Unhandled callback exception on event `$ev': $_[0]\tduring exception callback: $@"
+					warn "Unhandled callback exception on event `$ev': $_[0]\tduring exception callback: $e"
 				} else {
 					if ($obj->handles('__DIE__')) {
-						$obj->event(__DIE__ => my $e = $@);
+						$obj->event(__DIE__ => $e);
 					} else {
-						warn "Unhandled callback exception on event `$ev': $@\n";
+						warn "Unhandled callback exception on event `$ev': $e\n";
 					}
 				}
 				last;
