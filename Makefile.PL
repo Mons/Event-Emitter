@@ -1,3 +1,29 @@
+use 5.008008;
+use ExtUtils::MakeMaker;
+
+our $AUTHOR = -e '.git';
+if ($AUTHOR) {
+	#system( 'pod2text ... > README' ) and die "$!";
+}
+unlink 'META.yml';
+
+WriteMakefile(
+	NAME              => 'Event::Emitter',
+	VERSION_FROM      => 'lib/Event/Emitter.pm',
+	ABSTRACT_FROM     => 'lib/Event/Emitter.pm',
+	PREREQ_PM         => {  },
+	AUTHOR            => 'Mons Anderson <mons@cpan.org>',
+	META_ADD          => { license => 'perl' },
+	PL_FILES          => {
+		"Kit.pm.PL" => '$(INST_LIB)/Event/Emitter/Kit.pm',
+		#$AUTHOR ? (
+		#	"Kit.pm.PL" => 'lib/Event/Emitter/Kit.pm',
+		#) : ()
+	},
+	clean             => { FILES => "Kit.pm" },
+);
+
+__END__
 use inc::Module::Install;
 
 my $MI  = $Module::Install::MAIN;

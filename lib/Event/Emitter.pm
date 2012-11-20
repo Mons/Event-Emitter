@@ -1,11 +1,10 @@
 package Event::Emitter;
 
 use 5.008008;
-use common::sense 2;m{
+use Event::Emitter::Kit;m{
 use strict;
 use warnings;
 };
-use Carp;
 
 =head1 NAME
 
@@ -13,7 +12,7 @@ Event::Emitter - Glue for event-driven programming, inside out
 
 =cut
 
-our $VERSION = '0.02'; $VERSION = eval($VERSION);
+our $VERSION = '0.03'; $VERSION = eval($VERSION);
 
 =head1 SYNOPSIS
 
@@ -179,12 +178,10 @@ package #hide
 	Event::Emitter::Core;
 
 use 5.008008;
-use common::sense 2;m{
+use Event::Emitter::Kit ':refaddr';m{
 use strict;
 use warnings;
 };
-use Carp;
-use Scalar::Util 'refaddr';
 
 
 
