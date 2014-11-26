@@ -314,7 +314,7 @@ sub event {
 	my $obj = shift;
 	my $id = refaddr $obj;
 	my $ev = shift;
-	exists $HANDLERS{$id}{$ev} or return undef;
+	exists $HANDLERS{$id}{$ev} or warn("no events for $id/$ev"),return undef;
 	{
 		local $FLOW{$id} = $ev;
 		my $ec = $HANDLERS{$id}{$ev} ||= Event::Emitter::EC->new();
@@ -333,7 +333,7 @@ sub event {
 						warn "Unhandled callback exception on event `$ev': $e\n";
 					}
 				}
-				last;
+				return undef;
 			};
 			if (defined $cbx->[1]) {
 				$ec->del( $cbx->[0] ) if --$cbx->[1] <= 0;
@@ -342,6 +342,7 @@ sub event {
 			
 		}
 	}
+	return 1;
 }
 
 sub handled {
