@@ -314,7 +314,9 @@ sub event {
 	my $obj = shift;
 	my $id = refaddr $obj;
 	my $ev = shift;
-	exists $HANDLERS{$id}{$ev} or warn("no events for $id/$ev"),return undef;
+	exists $HANDLERS{$id}{$ev} or
+		#warn("no handlers for $id/$ev"),
+		return undef;
 	{
 		local $FLOW{$id} = $ev;
 		my $ec = $HANDLERS{$id}{$ev} ||= Event::Emitter::EC->new();
